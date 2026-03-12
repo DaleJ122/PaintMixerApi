@@ -83,9 +83,9 @@ app.MapPost("/jobs", async (
 
         return code == -1
             ? Results.Problem(localizer["JobSubmitFailed"].Value, statusCode: 422)
-            : Results.Ok(new JobSubmittedResponse(code));
+            : Results.Created($"/jobs/{code}", new JobSubmittedResponse(code));
     })
-.Produces<JobSubmittedResponse>()
+.Produces<JobSubmittedResponse>(201)
 .ProducesValidationProblem()
 .ProducesProblem(422);
 

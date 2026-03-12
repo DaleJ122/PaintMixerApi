@@ -14,24 +14,24 @@ namespace PaintMixer.Api.Tests
         }
 
         [Fact]
-        public async Task SubmitJob_ValidRequest_Returns200WithJobCode()
+        public async Task SubmitJob_ValidRequest_Returns201WithJobCode()
         {
             var response = await _client.PostAsJsonAsync("/jobs",
                 new { red = 30, blue = 20 });
 
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            response.StatusCode.Should().Be(HttpStatusCode.Created);
 
             var body = await response.Content.ReadFromJsonAsync<JobSubmittedResponse>();
             body!.JobCode.Should().BeGreaterThanOrEqualTo(0);
         }
 
         [Fact]
-        public async Task SubmitJob_AllZeroes_Returns200()
+        public async Task SubmitJob_AllZeroes_Returns201()
         {
             var response = await _client.PostAsJsonAsync("/jobs",
                 new { red = 0, blue = 0 });
 
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            response.StatusCode.Should().Be(HttpStatusCode.Created);
         }
 
         [Theory]
@@ -116,20 +116,20 @@ namespace PaintMixer.Api.Tests
         }
 
         [Fact]
-        public async Task SubmitJob_TotalExactly100_Returns200()
+        public async Task SubmitJob_TotalExactly100_Returns201()
         {
             var response = await _client.PostAsJsonAsync("/jobs", new { red = 50, blue = 50 });
 
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            response.StatusCode.Should().Be(HttpStatusCode.Created);
         }
 
         [Fact]
-        public async Task SubmitJob_EmptyBody_ReturnsOk()
+        public async Task SubmitJob_EmptyBody_Returns201()
         {
             var response = await _client.PostAsync("/jobs",
                 new StringContent("{}", System.Text.Encoding.UTF8, "application/json"));
 
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            response.StatusCode.Should().Be(HttpStatusCode.Created);
         }
 
         [Fact]
